@@ -138,9 +138,7 @@ class MSDeformAttn(nn.Module):
             sampling_offsets = self.sampling_offsets(query_box).view(N, Len_q, self.n_heads, self.n_levels, self.n_points, 2)
             attention_weights = self.attention_weights(query_box).view(N, Len_q, self.n_heads, self.n_levels * self.n_points)
             attention_weights = F.softmax(attention_weights, -1).view(N, Len_q, self.n_heads, self.n_levels, self.n_points)
-            # sampling_offsets [bz, 300, 8, 4, 4, 2]]
-            #attention_weights [bz, 300, 8, 4, 4]
-            
+
             value_list = []
             point_list = []
             result_list =[]
@@ -184,10 +182,7 @@ class MSDeformAttn(nn.Module):
             sampling_offsets = self.sampling_offsets(query_box).view(N, nf,Len_q, self.n_heads, self.n_levels, self.n_points, 2)
             attention_weights = self.attention_weights(query_box).view(N, nf, Len_q, self.n_heads, self.n_levels * self.n_points)
             attention_weights = F.softmax(attention_weights, -1).view(N, nf, Len_q, self.n_heads, self.n_levels, self.n_points)
-            # sampling_offsets [bz, nf, 300, 8, 4, 4, 2]]
-            #attention_weights [bz, nf, 300, 8, 4, 4]
-          
-            
+               
             value_list = []
             point_list = []
             sampling_offsets_list = []
