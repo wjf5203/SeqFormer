@@ -10,7 +10,7 @@
 
 <p align="center"><img src="assets/sota.png" width="500"/></p>
 
-> [**SeqFormer: a Frustratingly Simple Model for Video Instance Segmentation**](https://arxiv.org/abs/2110.06864)
+> [**SeqFormer: a Frustratingly Simple Model for Video Instance Segmentation**](https://arxiv.org/abs/2112.08275)
 >
 > Junfeng Wu, Yi Jiang, Wenqing Zhang, Xiang Bai, Song Bai
 >
