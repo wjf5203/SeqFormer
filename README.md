@@ -47,7 +47,7 @@ First, clone the repository locally:
 git clone https://github.com/wjf5203/SeqFormer.git
 ```
 
-Then, install PyTorch 1.7 and torchvision 0.8.
+Then, install PyTorch 1.7 and torchvision 0.8:
 
 ```bash
 conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 -c pytorch
