@@ -298,23 +298,7 @@ class SetCriterion(nn.Module):
         src_boxes = outputs['pred_boxes'].permute(0,2,1,3)[idx]  # [selected_inst, nf, 4]
         num_insts,nf = src_boxes.shape[:2]
         tgt_bbox = torch.cat([v["boxes"] for v in targets])
- 
-        # import pdb;pdb.set_trace()
-        # new_target = []
-        # for bz_gt in targets:
-        #     tgt_ids = bz_gt['labels']
-        #     num_insts = len(tgt_ids)
-        #     tgt_bbox = bz_gt['boxes']
-        #     new_tgt_bbox = []
-        #     for n_i in range(num_insts):
-        #         new_tgt_bbox.append(tgt_bbox[n_i*nf:(n_i+1)*nf].unsqueeze(0))
-        #     if len(new_tgt_bbox) == 0:
-        #         pass
-        #     tgt_bbox = torch.cat(new_tgt_bbox, dim=0) 
-        #     new_target.append(tgt_bbox)
-        # import pdb;pdb.set_trace()
-
-        
+       
         tgt_bbox = tgt_bbox.reshape(num_insts,nf,4)
         sizes = [len(v["labels"]) for v in targets]
         target_boxes = list(tgt_bbox.split(sizes,dim=0))
