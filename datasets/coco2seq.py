@@ -78,10 +78,10 @@ class CocoDetection(TvCocoDetection):
 
             if self._transforms is not None:
                 img, target = self._transforms(seq_images, target, self.num_frames)
-            if len(target['labels']) == 0 or len(target['labels']) > 25: # None instance 
-                idx = random.randint(0,self.__len__()-1)
-            else:
+            if len(target['labels']) > 0 and len(target['labels']) <= 25: 
                 instance_check=True
+            else:
+                idx = random.randint(0,self.__len__()-1) # None instance or too much instances
               
         for inst_id in range(len(target['boxes'])):
             if target['masks'][inst_id].max()<1:
