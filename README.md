@@ -129,7 +129,7 @@ Train on YouTube-VIS 2019 and COCO, evaluate on YouTube-VIS 2019 val set.
 
 ### Training
 
-We performed the experiment on NVIDIA Tesla V100 GPU. All models of SeqFormer are trained with total batch size of 32.
+We performed the experiment on NVIDIA Tesla V100 GPU. All models of SeqFormer are trained with total batch size of 16.
 
 To train SeqFormer on YouTube-VIS 2019 with 8 GPUs , run:
 
