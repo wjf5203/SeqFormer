@@ -23,7 +23,7 @@ from PIL import Image
 from util.box_ops import masks_to_boxes
 import random
 from util import box_ops
-from .ytvos import make_coco_transforms
+
 
 class CocoDetection(TvCocoDetection):
     def __init__(self, img_folder, ann_file, transforms, return_masks, cache_mode=False, local_rank=0, local_size=1):
@@ -90,6 +90,44 @@ class CocoDetection(TvCocoDetection):
         target['boxes']=target['boxes'].clamp(1e-6)
         return torch.cat(img,dim=0), target   
 
+
+def make_coco_transforms(image_set):
+
+    normalize = T.Compose([
+        T.ToTensor(),
+        T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])
+
+    scales = [288, 320, 352, 392, 416, 448, 480, 512]
+
+    if image_set == 'train':
+        return T.Compose([
+            T.RandomHorizontalFlip(),
+            # T.PhotometricDistort(),
+            T.RandomSelect(
+                T.Compose([
+                    T.RandomResize(scales, max_size=768),
+                    T.Check(),
+                ]),
+                T.Compose([
+                    T.RandomResize([400, 500, 600]),
+                    T.RandomSizeCrop(384, 600),
+                    T.RandomResize(scales, max_size=768),
+                    T.Check(),
+                ])
+            ),
+            normalize,
+        ])
+
+
+    if image_set == 'val':
+        return T.Compose([
+            # T.RandomResize([800], max_size=1333),
+            T.RandomResize([360], max_size=640),
+            normalize,
+        ])
+        
+    raise ValueError(f'unknown {image_set}')
 
 
 
