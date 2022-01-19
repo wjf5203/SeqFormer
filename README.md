@@ -96,7 +96,7 @@ coco
 
 
 
-The modified coco annotations 'coco_keepfor_ytvis19.json' for joint training can be downloaded from [[google]](https://drive.google.com/file/d/1u3DWAaRVDL-Nr-zZFeTOxe3xxEvJqUVK/view?usp=sharing).
+The modified coco annotations 'coco_keepfor_ytvis19.json' for joint training can be downloaded from [[google]](https://drive.google.com/file/d/1dhfxtnu0oiolNyOWjf4CscBgb_tNg-K8/view?usp=sharing).
 
 ##  
 
