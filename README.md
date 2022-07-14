@@ -1,4 +1,9 @@
-# SeqFormer: a Frustratingly Simple Model for Video Instance Segmentation
+# SeqFormer: Sequential Transformer for Video Instance Segmentation
+
+
+News:
+SeqFormer is accepted as a paper for an oral presentation at ECCV’2022!
+A revised version of the code is coming soon.
 
 
 
