@@ -18,9 +18,9 @@ A revised version of the code is coming soon.
 
 > [**SeqFormer: a Frustratingly Simple Model for Video Instance Segmentation**](https://arxiv.org/abs/2112.08275)
 >
-> Junfeng Wu, Yi Jiang, Wenqing Zhang, Xiang Bai, Song Bai
+> Junfeng Wu, Yi Jiang, Wenqing Zhang, Song Bai, Xiang Bai
 >
-> [arXiv 2112.08275](https://arxiv.org/abs/2112.08275)
+
 
 
 
