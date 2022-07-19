@@ -18,7 +18,7 @@ A revised version of the code is coming soon.
 
 > [**SeqFormer: Sequential Transformer for Video Instance Segmentation**](https://arxiv.org/abs/2112.08275)
 >
-> Junfeng Wu, Yi Jiang, Wenqing Zhang, Song Bai, Xiang Bai
+> Junfeng Wu, Yi Jiang, Song Bai, Wenqing Zhang, Xiang Bai
 >
 
 
