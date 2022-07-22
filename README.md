@@ -2,7 +2,7 @@
 
 
 News:
-SeqFormer is accepted as a paper for an oral presentation at ECCV’2022!
+SeqFormer is accepted as a paper for an **oral** presentation at **ECCV’2022**!
 
 A revised detectron2 version of SeqFormer, which supports multi-card training and inference, and supports inference by clip-matching manner, can be found here: [VNext](https://github.com/wjf5203/VNext)
 
