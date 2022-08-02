@@ -59,6 +59,8 @@ class MSDeformAttn(nn.Module):
         self.value_proj = nn.Linear(d_model, d_model)
         self.output_proj = nn.Linear(d_model, d_model)
         self.output_proj_box = nn.Linear(d_model, d_model)
+        if self.mode == 'decode':
+            self.output_proj_box = nn.Linear(d_model, d_model)
 
         self._reset_parameters()
 
@@ -105,7 +107,7 @@ class MSDeformAttn(nn.Module):
         for i in range(nf):
             value_list.append(value[:,i].contiguous())
         for idx_f in range(nf):
-            sampling_offsets_i = sampling_offsets[:,idx_f]  
+            sampling_offsets_i = sampling_offsets[:,idx_f]
             if reference_points.shape[-1] == 2:
                 offset_normalizer = torch.stack([input_spatial_shapes[..., 1], input_spatial_shapes[..., 0]], -1)
                 sampling_locations_i = reference_points[:, :, None, :, None, :] \
@@ -147,14 +149,14 @@ class MSDeformAttn(nn.Module):
                 point_list.append(reference_points[:,i].contiguous() )
 
             result_idx_f = []
-            
+
             for samp_i in range(nf): # perform deformable attention per frame
-                
+
                 reference_points_i = point_list[samp_i]
                 if reference_points_i.shape[-1] == 2:
                     offset_normalizer = torch.stack([input_spatial_shapes[..., 1], input_spatial_shapes[..., 0]], -1)
                     sampling_locations = reference_points_i[:, :, None, :, None, :] + sampling_offsets / offset_normalizer[None, None, None, :, None, :]
-                elif reference_points_i.shape[-1] == 4:  
+                elif reference_points_i.shape[-1] == 4:
                     sampling_locations = reference_points_i[:, :, None, :, None, :2] \
                                         + sampling_offsets / self.n_points * reference_points_i[:, :, None, :, None, 2:] * 0.5
                 else:
@@ -177,12 +179,12 @@ class MSDeformAttn(nn.Module):
             value = self.value_proj(input_flatten)
             if input_padding_mask is not None:
                 value = value.masked_fill(input_padding_mask[..., None], float(0))
-            # 
+            #
             value = value.view(N, nf, Len_in, self.n_heads, self.d_model // self.n_heads)
             sampling_offsets = self.sampling_offsets(query_box).view(N, nf,Len_q, self.n_heads, self.n_levels, self.n_points, 2)
             attention_weights = self.attention_weights(query_box).view(N, nf, Len_q, self.n_heads, self.n_levels * self.n_points)
             attention_weights = F.softmax(attention_weights, -1).view(N, nf, Len_q, self.n_heads, self.n_levels, self.n_points)
-               
+
             value_list = []
             point_list = []
             sampling_offsets_list = []
@@ -199,7 +201,7 @@ class MSDeformAttn(nn.Module):
                 if reference_points_i.shape[-1] == 2:
                     offset_normalizer = torch.stack([input_spatial_shapes[..., 1], input_spatial_shapes[..., 0]], -1)
                     sampling_locations = reference_points_i[:, :, None, :, None, :] + sampling_offsets_list[samp_i] / offset_normalizer[None, None, None, :, None, :]
-                elif reference_points_i.shape[-1] == 4: 
+                elif reference_points_i.shape[-1] == 4:
                     sampling_locations = reference_points_i[:, :, None, :, None, :2] \
                                         + sampling_offsets_list[samp_i] / self.n_points * reference_points_i[:, :, None, :, None, 2:] * 0.5
                 else:
@@ -208,7 +210,7 @@ class MSDeformAttn(nn.Module):
                 output_samp_i = MSDeformAttnFunction.apply(
                     value_list[samp_i], input_spatial_shapes, input_level_start_index, sampling_locations, attention_weights_list[samp_i], self.im2col_step)
                 result_idx_f.append(output_samp_i.unsqueeze(1))
-            result_idx_f = torch.cat(result_idx_f,dim=1) 
+            result_idx_f = torch.cat(result_idx_f,dim=1)
             result_sum = result_idx_f
             output = self.output_proj(result_sum)
             output_box = self.output_proj_box(result_idx_f)
