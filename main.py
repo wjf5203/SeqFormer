@@ -40,7 +40,7 @@ def get_args_parser():
     parser.add_argument('--clip_max_norm', default=0.1, type=float,
                         help='gradient clipping max norm')
 
-    parser.add_argument('--sgd', action='store_true') 
+    parser.add_argument('--sgd', action='store_true')
 
     # Variants of Deformable DETR
     parser.add_argument('--with_box_refine', default=False, action='store_true')
@@ -149,7 +149,7 @@ def main(args):
     random.seed(seed)
 
     model, criterion, postprocessors = build_model(args)
-    
+
     model.to(device)
 
     model_without_ddp = model
@@ -206,7 +206,7 @@ def main(args):
             "lr": args.lr * args.lr_linear_proj_mult,
         }
     ]
-    
+
     if args.sgd:
         optimizer = torch.optim.SGD(param_dicts, lr=args.lr, momentum=0.9,
                                     weight_decay=args.weight_decay)
@@ -216,11 +216,11 @@ def main(args):
     lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, args.lr_drop )
 
     if args.distributed:
-        model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu], find_unused_parameters=True)
+        model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu])
         model_without_ddp = model.module
-    
+
     base_ds = {}
-    
+
     if args.dataset_file == 'YoutubeVIS'  or args.dataset_file == 'jointcoco' or args.dataset_file == 'Seq_coco':
         base_ds['ytvos'] = get_coco_api_from_dataset(dataset_val)
     else:
@@ -248,7 +248,7 @@ def main(args):
                 lr_scheduler.base_lrs = list(map(lambda group: group['initial_lr'], optimizer.param_groups))
             lr_scheduler.step(lr_scheduler.last_epoch)
             args.start_epoch = checkpoint['epoch'] + 1
-    
+
     elif args.pretrain_weights is not None:
         print('load weigth from pretrain weight:',args.pretrain_weights)
         checkpoint = torch.load(args.pretrain_weights, map_location='cpu')['model']
@@ -292,7 +292,7 @@ def main(args):
                     'args': args,
                 }, checkpoint_path)
 
-     
+
 
         if (epoch + 1) % 1 == 0 and args.eval_types == 'coco':
             test_stats, coco_evaluator = evaluate(model, criterion, postprocessors,
